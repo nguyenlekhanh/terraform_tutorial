@@ -20,3 +20,12 @@ resource "aws_subnet" "main_public_subnet" {
     Name = "dev-public"
   }
 }
+
+resource "aws_internet_gateway" "main_internet_gateway" {
+  vpc_id = aws_vpc.main_vpc.id
+
+  tags = {
+    Name = "dev-igw"
+  }
+}
+
