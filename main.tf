@@ -96,12 +96,12 @@ resource "aws_instance" "web" {
 
   //this command will put ip of the ec2 instance into /.ssh/config file of the local machine
   provisioner "local-exec" {
-    command = templatefile("windows-ssh-config.tpl", {
+    command = templatefile("${var.host_os}-ssh-config.tpl", {
       hostname = self.public_ip,
       user = "ubuntu"
       identityfile = "~/.ssh/mainkey"
     })
-    interpreter = ["Powershell", "-Command"]
+    interpreter = var.host_os == "windows" ? ["Powershell", "-Command"] : ["bash", "-c"]
 
     #interpreter = ["bash", "-c"]     #use for linux
   }
