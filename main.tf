@@ -94,6 +94,16 @@ resource "aws_instance" "web" {
     Name = "dev-node"
   }
 
+  //this command will put ip of the ec2 instance into /.ssh/config file of the local machine
+  provisioner "local-exec" {
+    command = templatefile("windows-ssh-config.tpl", {
+      hostname = self.public_ip,
+      user = "ubuntu"
+      identityfile = "~/.ssh/mainkey"
+    })
+    interpreter = ["Powershell", "-Command"]
 
+    #interpreter = ["bash", "-c"]     #use for linux
+  }
 
 }
